@@ -1,0 +1,28 @@
+import { Injectable } from "@nestjs/common"
+import { JwtService } from "@nestjs/jwt"
+import { ConfigService } from "@nestjs/config"
+import { UserDto } from "../../dto/user.dto"
+import { AccessTokenPayload } from "../../types/tokenPayload"
+
+@Injectable()
+export class BuildAccessTokenService {
+  constructor(
+    private readonly jwtService: JwtService,
+    private readonly configService: ConfigService,
+  ) {}
+
+  public async execute(user: UserDto): Promise<string> {
+    const payload: AccessTokenPayload = {
+      sub: user.id,
+      admin: user.admin,
+    }
+
+    const expiresInSeconds =
+      this.configService.get<number>("JWT_ACCESS_TOKEN_EXPIRE_TIME") ??
+      60 * 15 // 15 minutes default
+
+    return await this.jwtService.signAsync(payload, {
+      expiresIn: `${expiresInSeconds}s`,
+    })
+  }
+}
