@@ -1,16 +1,16 @@
 import { Injectable, UnauthorizedException } from "@nestjs/common"
 import { InjectRepository } from "@nestjs/typeorm"
-import { RefreshToken } from "../entities/refreshTokenState"
+import { RefreshTokenState } from "../entities/refreshTokenState"
 import { Repository } from "typeorm"
 
 @Injectable()
 export class GetRefreshTokenStateByUserAndAgentService {
   constructor(
-    @InjectRepository(RefreshToken)
-    private readonly refreshTokenRepository: Repository<RefreshToken>
+    @InjectRepository(RefreshTokenState)
+    private readonly refreshTokenRepository: Repository<RefreshTokenState>
   ) {}
 
-  public async execute(userId: string, userAgent: string): Promise<RefreshToken> {
+  public async execute(userId: string, userAgent: string): Promise<RefreshTokenState> {
     const refreshTokenState = await this.getRefreshTokenStateByIdAndUserAgent(userId)
     if (!refreshTokenState) {
       throw new UnauthorizedException("not allowed")
@@ -20,7 +20,7 @@ export class GetRefreshTokenStateByUserAndAgentService {
 
   private async getRefreshTokenStateByIdAndUserAgent(
     userId: string
-  ): Promise<RefreshToken | null> {
+  ): Promise<RefreshTokenState | null> {
     return await this.refreshTokenRepository.findOne({
       where: { userId }
     })

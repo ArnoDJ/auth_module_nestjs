@@ -1,11 +1,11 @@
 import { Injectable } from "@nestjs/common"
 import { AuthenticationDto } from "../../dto/authentication.dto"
-import { AuthenticationResultDto } from "../../dto/authenticationResult.dto"
 import { AuthenticateService } from "./authenticate.service"
 import { FindOrCreateRefreshTokenStateService } from "./findOrCreateRefreshTokenState.service"
 import { BuildAccessTokenService } from "../tokens/buildAccessToken.service"
 import { BuildRefreshTokenService } from "../tokens/buildRefreshToken.service"
-import { BuildCsrfTokenService } from "../buildCsrfToken.service"
+import { BuildCsrfTokenService } from "../csrf/buildCsrfToken.service"
+import { LoginInternalResult } from "../../types/loginInternalResult"
 
 @Injectable()
 export class LoginService {
@@ -20,7 +20,7 @@ export class LoginService {
   public async execute(
     credentials: AuthenticationDto,
     userAgent: string,
-  ): Promise<AuthenticationResultDto> {
+  ): Promise<LoginInternalResult> {
     const user = await this.authenticateService.execute(credentials)
     const refreshTokenState = await this.findOrCreateRefreshTokenStateService.execute(
       user.id,

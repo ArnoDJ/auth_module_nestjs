@@ -1,5 +1,5 @@
 import { bootstrapTestingModule } from "../../../../helpers/testHelper"
-import { AlterPasswordService } from "../alterPassword.service"
+import { AlterPasswordService } from "../changePassword.service"
 import { PasswordResetToken, User } from "../../entities"
 import { DataSource } from "typeorm"
 import { hash } from "bcrypt"

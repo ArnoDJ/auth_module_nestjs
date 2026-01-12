@@ -17,12 +17,25 @@ export class BuildAccessTokenService {
       admin: user.admin,
     }
 
-    const expiresInSeconds =
-      this.configService.get<number>("JWT_ACCESS_TOKEN_EXPIRE_TIME") ??
-      60 * 15 // 15 minutes default
+    const expiresInSeconds = this.getExpiresInSeconds()
 
     return await this.jwtService.signAsync(payload, {
       expiresIn: `${expiresInSeconds}s`,
     })
+  }
+
+  private getExpiresInSeconds(): number {
+    const value = this.configService.get<number>(
+      "JWT_ACCESS_TOKEN_EXPIRE_TIME",
+    )
+    if (value === undefined) {
+      return 60 * 15
+    }
+
+    if (!Number.isInteger(value) || value <= 0) {
+      throw new Error("JWT_ACCESS_TOKEN_EXPIRE_TIME must be a positive integer")
+    }
+
+    return value
   }
 }

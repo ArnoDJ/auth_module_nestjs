@@ -9,6 +9,7 @@ import {
   UpdateDateColumn,
 } from "typeorm"
 import { RefreshTokenState } from "./refreshTokenState"
+import { EmailVerificationToken } from "./EmailVerificationToken"
 
 @Entity("users")
 @Index("ux_users_email", ["email"], { unique: true })
@@ -74,6 +75,15 @@ export class User {
   })
   public lastFailedLoginAt: Date | null
 
+
+  @ApiProperty({
+    description: "Timestamp when the email was verified",
+    nullable: true,
+  })
+  @Column({ name: "email_verified_at", type: "timestamp", nullable: true })
+  emailVerifiedAt: Date | null
+
+
   @ApiProperty()
   @CreateDateColumn({
     name: "created_at",
@@ -87,6 +97,12 @@ export class User {
     type: "timestamp with time zone",
   })
   public updatedAt: Date
+
+  @OneToMany(
+    () => EmailVerificationToken,
+    (token) => token.user,
+  )
+  emailVerificationTokens: EmailVerificationToken[]
 
   @OneToMany(() => RefreshTokenState, (refreshTokenStates) => refreshTokenStates.user)
   public refreshTokenStates: RefreshTokenState[]

@@ -14,7 +14,7 @@ export class BuildCsrfTokenService {
 
     const hmac = this.sign(nonce, expiresAt, refreshTokenStateId)
 
-    return `${nonce}.${expiresAt}.${refreshTokenStateId}.${hmac}`
+    return `v1.${nonce}.${expiresAt}.${refreshTokenStateId}.${hmac}`
   }
 
   private sign(
@@ -22,19 +22,28 @@ export class BuildCsrfTokenService {
     expiresAt: number,
     refreshTokenStateId: string,
   ): string {
-    const secret = this.configService.get<string>("CSRF_SECRET")!
+    const secret = this.getSecret()
     const hmac = createHmac("sha256", secret)
 
-    hmac.update(`${nonce}.${expiresAt}.${refreshTokenStateId}`)
+    hmac.update(`v1.${nonce}.${expiresAt}.${refreshTokenStateId}`)
 
-    return hmac.digest("base64")
+    return hmac.digest("base64url")
   }
 
   private getExpiresAt(): number {
     const ttl =
       this.configService.get<number>("CSRF_TOKEN_TTL") ??
-      60 * 60 * 24 // 24h
+      60 * 60 * 24
 
     return Math.floor(Date.now() / 1000) + ttl
   }
+
+  private getSecret(): string {
+    const secret = this.configService.get<string>("CSRF_SECRET")
+    if (!secret) {
+      throw new Error("CSRF_SECRET is not configured")
+    }
+    return secret
+  }
+
 }

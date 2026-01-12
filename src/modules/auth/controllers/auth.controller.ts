@@ -21,6 +21,7 @@ import { JwtGuard } from "../guards/jwtGuard"
 import { User } from "../entities/user"
 import { LoginService } from "../services/authentication/login.service"
 import { AuthCookieInterceptor } from "../interceptors/authCookie.interceptor"
+import { ClearAuthCookiesInterceptor } from "../interceptors/clearAuthCookie.interceptor"
 
 @ApiTags("Auth")
 @Controller("auth")
@@ -49,13 +50,12 @@ export class AuthController {
     )
   }
 
-  @ApiOperation({ description: "logs a user out by revoking his/her access token" })
-  @ApiOkResponse({
-    description: "user successfully logged out",
-  })
+  @ApiOperation({ description: "logs a user out" })
+  @ApiOkResponse({ description: "user successfully logged out" })
   @UseGuards(JwtGuard)
+  @UseInterceptors(ClearAuthCookiesInterceptor)
   @Post("/logout")
-  @HttpCode(200)
+  @HttpCode(204)
   public async logout(
     @CurrentUser() currentUser: User,
     @Headers("user-agent") userAgent?: string,
@@ -65,4 +65,5 @@ export class AuthController {
       userAgent ?? "unknown",
     )
   }
+
 }

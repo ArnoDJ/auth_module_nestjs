@@ -13,17 +13,20 @@ import { GetRefreshTokenStateByIdService } from "./services/getRefreshTokenState
 import { BuildRefreshTokenService } from "./services/tokens/buildRefreshToken.service"
 import { RefreshTokenService } from "./services/refreshToken.service"
 import { BuildCookieWithCsrfTokenService } from "./services/cookies/buildCookieWithCsrfToken.service"
-import { VerifyCsrfTokenService } from "./services/verifyCsrfToken.service"
-import { BuildCsrfTokenService } from "./services/buildCsrfToken.service"
+import { VerifyCsrfTokenService } from "./services/csrf/verifyCsrfToken.service"
+import { BuildCsrfTokenService } from "./services/csrf/buildCsrfToken.service"
 import { LogoutService } from "./services/logout.service"
 import { GetRefreshTokenStateByUserAndAgentService } from "./services/getRefreshTokenByUserAndAgent.service"
 import { DatabaseModule } from "../database/database.module"
 import { User } from "./entities/user"
-import { RefreshToken } from "./entities/refreshTokenState"
+import { RefreshTokenState } from "./entities/refreshTokenState"
 import { PasswordResetToken } from "./entities/passwordResetToken"
 import { PasswordResetService } from "./services/passwordReset.service"
-import { AlterPasswordService } from "./services/alterPassword.service"
+import { ChangePasswordService } from "./services/changePassword.service"
 import { AuthCookieInterceptor } from "./interceptors/authCookie.interceptor"
+import { RevokeRefreshTokenStateService } from "./services/revokeRefreshTokenState.service"
+import { ClearAuthCookiesInterceptor } from "./interceptors/clearAuthCookie.interceptor"
+import { RevokeAllRefreshTokenStatesForUserService } from "./services/tokens/revokeAllRefreshTokenStatesForUser.service"
 
 @Module({
   imports: [
@@ -43,7 +46,7 @@ import { AuthCookieInterceptor } from "./interceptors/authCookie.interceptor"
     }),
     DatabaseModule.forFeature([
       User,
-      RefreshToken,
+      RefreshTokenState,
       PasswordResetToken
     ]),
   ],
@@ -61,10 +64,14 @@ import { AuthCookieInterceptor } from "./interceptors/authCookie.interceptor"
     VerifyCsrfTokenService,
     BuildCsrfTokenService,
     LogoutService,
+    PasswordResetService,
+    ChangePasswordService,
     GetRefreshTokenStateByUserAndAgentService,
     PasswordResetService,
-    AlterPasswordService,
-    AuthCookieInterceptor
+    AuthCookieInterceptor,
+    ClearAuthCookiesInterceptor,
+    RevokeRefreshTokenStateService,
+    RevokeAllRefreshTokenStatesForUserService
   ],
   exports: [BuildAccessTokenService, JwtModule]
 })

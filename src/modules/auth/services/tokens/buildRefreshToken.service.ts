@@ -1,8 +1,8 @@
 import { Injectable } from "@nestjs/common"
 import { ConfigService } from "@nestjs/config"
 import { JwtService } from "@nestjs/jwt"
-import { RefreshToken } from "../../entities/refreshTokenState"
 import { RefreshTokenJwtPayload } from "../../types/tokenPayload"
+import { RefreshToken } from "../../types/refreshToken"
 
 @Injectable()
 export class BuildRefreshTokenService {
@@ -14,7 +14,7 @@ export class BuildRefreshTokenService {
   public async execute(refreshToken: RefreshToken): Promise<string> {
     const expiresInSeconds =
       this.configService.get<number>("JWT_REFRESH_TOKEN_EXPIRE_TIME") ??
-      60 * 60 * 24 * 7 // 7 days
+      60 * 60 * 24 * 7
 
     const payload: RefreshTokenJwtPayload = {
       sub: refreshToken.userId,

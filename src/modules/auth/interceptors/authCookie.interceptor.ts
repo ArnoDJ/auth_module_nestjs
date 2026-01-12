@@ -9,12 +9,7 @@ import { tap } from "rxjs/operators"
 import { Response } from "express"
 import { BuildCookieWithRefreshTokenService } from "../services/cookies/buildCookieWithRefreshToken.service"
 import { BuildCookieWithCsrfTokenService } from "../services/cookies/buildCookieWithCsrfToken.service"
-
-type LoginResponseWithSecrets = {
-  accessToken: string
-  refreshToken: string
-  csrfToken: string
-}
+import { LoginInternalResult } from "../types/loginInternalResult"
 
 type LoginResponse = {
   accessToken: string
@@ -22,7 +17,7 @@ type LoginResponse = {
 
 @Injectable()
 export class AuthCookieInterceptor
-  implements NestInterceptor<LoginResponseWithSecrets, LoginResponse>
+  implements NestInterceptor<LoginInternalResult, LoginResponse>
 {
   constructor(
     private readonly buildCookieWithRefreshTokenService: BuildCookieWithRefreshTokenService,
@@ -31,8 +26,8 @@ export class AuthCookieInterceptor
 
   intercept(
     context: ExecutionContext,
-    next: CallHandler<LoginResponseWithSecrets>,
-  ): Observable<LoginResponse> {
+    next: CallHandler<LoginInternalResult>,
+  ): Observable<LoginInternalResult> {
     const res = context.switchToHttp().getResponse<Response>()
 
     return next.handle().pipe(
@@ -46,8 +41,8 @@ export class AuthCookieInterceptor
         res.setHeader("Set-Cookie", [refreshCookie, csrfCookie])
 
         // Never expose secrets in response body
-        delete (result as Partial<LoginResponseWithSecrets>).refreshToken
-        delete (result as Partial<LoginResponseWithSecrets>).csrfToken
+        delete (result as Partial<LoginInternalResult>).refreshToken
+        delete (result as Partial<LoginInternalResult>).csrfToken
       }),
     )
   }

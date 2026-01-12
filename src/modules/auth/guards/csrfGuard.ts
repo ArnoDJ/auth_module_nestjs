@@ -1,45 +1,61 @@
 import {
   CanActivate,
   ExecutionContext,
-  Inject,
-  Injectable
+  ForbiddenException,
+  Injectable,
 } from "@nestjs/common"
 import { Request } from "express"
-import { VerifyCsrfTokenService } from "../services/verifyCsrfToken.service"
+import { timingSafeEqual } from "crypto"
+import { VerifyCsrfTokenService } from "../services/csrf/verifyCsrfToken.service"
 
 @Injectable()
 export class CsrfGuard implements CanActivate {
   constructor(
-    @Inject(VerifyCsrfTokenService)
-    private readonly verifyCsrfTokenService: VerifyCsrfTokenService
+    private readonly verifyCsrfTokenService: VerifyCsrfTokenService,
   ) {}
 
-  canActivate(context: ExecutionContext): boolean {
-    const request: Request = context.switchToHttp().getRequest()
-    const csrfTokenCookie = this.getCsrfTokenFromCookie(request)
-    const csrfToken = this.getCsrfTokenFromHeaders(request)
-    if (!csrfTokenCookie || !csrfToken) return false
-    const isVerified =
-      this.verifyToken(csrfToken) && this.verifyToken(csrfTokenCookie)
-    const isEqual = csrfToken === csrfTokenCookie
-    return isVerified && isEqual
-  }
+  async canActivate(context: ExecutionContext): Promise<boolean> {
+    const request = context.switchToHttp().getRequest<Request>()
 
-  private getCsrfTokenFromCookie(request: Request): string | undefined {
-    const cookies: { _csrf?: string } = request.cookies as {
-      _csrf?: string
+    const csrfCookie = this.getCsrfTokenFromCookie(request)
+    const csrfHeader = this.getCsrfTokenFromHeader(request)
+    if (!csrfCookie || !csrfHeader) {
+      throw new ForbiddenException("CSRF token missing")
     }
-    return cookies["_csrf"]
-  }
 
-  private getCsrfTokenFromHeaders(request: Request): string | undefined {
-    const headers: { ["x-csrf-token"]?: string } = request.headers as {
-      ["x-csrf-token"]?: string
+    if (!this.timingSafeEquals(csrfCookie, csrfHeader)) {
+      throw new ForbiddenException("CSRF token mismatch")
     }
-    return headers["x-csrf-token"]
+
+    await this.verifyCsrfTokenService.execute(csrfHeader)
+
+    return true
   }
 
-  private verifyToken(token: string): boolean {
-    return this.verifyCsrfTokenService.execute(token)
+  private getCsrfTokenFromCookie(request: Request): string | null {
+    const cookies = request.cookies as Record<string, unknown>
+    const token = cookies["_csrf"]
+
+    return typeof token === "string" && token.length > 0
+      ? token
+      : null
+  }
+
+  private getCsrfTokenFromHeader(request: Request): string | null {
+    const header = request.headers["x-csrf-token"]
+
+    return typeof header === "string" && header.length > 0
+      ? header
+      : null
+  }
+
+  private timingSafeEquals(a: string, b: string): boolean {
+    const aBuf = Buffer.from(a)
+    const bBuf = Buffer.from(b)
+    if (aBuf.length !== bBuf.length) {
+      return false
+    }
+
+    return timingSafeEqual(aBuf, bBuf)
   }
 }

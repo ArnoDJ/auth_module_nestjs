@@ -5,13 +5,15 @@ import { ChangePasswordDto } from "../dto/changePassword.dto"
 import { Repository } from "typeorm"
 import { PasswordResetToken } from "../entities/passwordResetToken"
 import { User } from "../entities/user"
+import { RevokeAllRefreshTokenStatesForUserService } from "./tokens/revokeAllRefreshTokenStatesForUser.service"
 
-export class AlterPasswordService {
+export class ChangePasswordService {
   constructor(
     @InjectRepository(PasswordResetToken)
     private readonly passwordResetTokenRepository: Repository<PasswordResetToken>,
     @InjectRepository(User)
-    private readonly userRepository: Repository<User>
+    private readonly userRepository: Repository<User>,
+    private readonly revokeAllRefreshTokenStatesForUserService: RevokeAllRefreshTokenStatesForUserService,
   ) {}
 
   public async execute(changePasswordData: ChangePasswordDto, token: string): Promise<void> {
@@ -25,6 +27,7 @@ export class AlterPasswordService {
         password: newPassword
       }
     ) as unknown as User
+    await this.revokeAllRefreshTokenStatesForUserService.execute(user.id)
     await this.passwordResetTokenRepository.delete({ userId: user.id })
   }
 

@@ -20,8 +20,8 @@
     "noFallthroughCasesInSwitch": true,
     "strictPropertyInitialization": false,
     "esModuleInterop": true,
-    "types": ["node", "jest", "express", "multer"]
+    "types": ["node", "jest", "express", "multer"],
   },
-  "include": ["src", "jest.config.js", "jest.setup.ts"],
+  "include": ["src", "src/**/*.ts", "jest.config.js", "jest.setup.ts"],
   "exclude": ["node_modules", "dist"]
 }

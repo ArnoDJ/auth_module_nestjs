@@ -13,14 +13,17 @@ import {
   ApiBadRequestResponse,
   ApiProperty
 } from "@nestjs/swagger"
-import { PasswordResetRequestDto } from "../../../dto/authentication.dto"
-import { ChangePasswordDto } from "src/dto/changePassword.dto"
+import { PasswordResetService } from "../services/passwordReset.service"
+import { PasswordResetRequestDto } from "../dto/authentication.dto"
+import { ChangePasswordDto } from "../dto/changePassword.dto"
+import { ChangePasswordService } from "../services/changePassword.service"
 
 @ApiTags("Auth")
 @Controller("auth/password-reset")
 export class PasswordResetController {
   constructor(
-
+    private readonly passwordResetService: PasswordResetService,
+    private readonly changePasswordService: ChangePasswordService,
   ) {}
 
   @ApiOperation({ description: "requests a password reset" })
@@ -29,9 +32,8 @@ export class PasswordResetController {
   @HttpCode(200)
   public async reset(
     @Body() passwordResetRequestData: PasswordResetRequestDto,
-    @Res() response: Response,
-  ): Promise<any> {
-
+  ): Promise<void> {
+    await this.passwordResetService.execute(passwordResetRequestData.email)
   }
 
   @ApiProperty({ description: "sets a new password" })
@@ -40,5 +42,7 @@ export class PasswordResetController {
   public async change(
     @Param("id") id: string,
     @Body() changePasswordDate: ChangePasswordDto,
-  ) {}
+  ): Promise<void> {
+    await this.changePasswordService.execute(changePasswordDate, id)
+  }
 }

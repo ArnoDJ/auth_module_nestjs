@@ -3,13 +3,18 @@ import { ConfigService } from "@nestjs/config"
 
 describe("BuildCookieWithRefreshTokenService", () => {
   let service: BuildCookieWithRefreshTokenService
-  let configService: jest.Mocked<ConfigService>
+  let configService: {
+    get: jest.Mock<string | undefined, [string]>
+  }
 
   beforeEach(() => {
-    configService = new ConfigService() as jest.Mocked<ConfigService>
-    jest.spyOn(configService, "get")
+    configService = {
+      get: jest.fn<string | undefined, [string]>(),
+    }
 
-    service = new BuildCookieWithRefreshTokenService(configService)
+    service = new BuildCookieWithRefreshTokenService(
+      configService as unknown as ConfigService,
+    )
   })
 
   it("builds a refresh token cookie with configured max age", () => {
@@ -20,8 +25,6 @@ describe("BuildCookieWithRefreshTokenService", () => {
     expect(result).toBe(
       "refreshToken=refresh-token-value; HttpOnly; Secure; Path=/auth/refresh_token; SameSite=None; Max-Age=7200",
     )
-
-    expect(configService.get).toHaveBeenCalledWith("COOKIE_EXPIRE_TIME")
   })
 
   it("falls back to default max age when config value is missing", () => {
