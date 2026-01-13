@@ -8,8 +8,8 @@ import {
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from "typeorm"
-import { RefreshTokenState } from "./refreshTokenState"
-import { EmailVerificationToken } from "./EmailVerificationToken"
+import { SessionState } from "./sessionState"
+import { EmailVerificationToken } from "./emailVerificationToken"
 
 @Entity("users")
 @Index("ux_users_email", ["email"], { unique: true })
@@ -104,6 +104,6 @@ export class User {
   )
   emailVerificationTokens: EmailVerificationToken[]
 
-  @OneToMany(() => RefreshTokenState, (refreshTokenStates) => refreshTokenStates.user)
-  public refreshTokenStates: RefreshTokenState[]
+  @OneToMany(() => SessionState, (sessionStates) => sessionStates.user)
+  public sessionStates: SessionState[]
 }

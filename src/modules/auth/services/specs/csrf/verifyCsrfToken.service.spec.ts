@@ -2,10 +2,15 @@ import { ConfigService } from "@nestjs/config"
 import { UnauthorizedException } from "@nestjs/common"
 import { BuildCsrfTokenService } from "../../csrf/buildCsrfToken.service"
 import { VerifyCsrfTokenService } from "../../csrf/verifyCsrfToken.service"
+import { GetSessionStateByIdService } from "../../sessions/getSessionStateById.service"
+import { SessionState } from "src/modules/auth/entities"
+import { Repository } from "typeorm"
 
 describe("VerifyCsrfTokenService", () => {
   let buildService: BuildCsrfTokenService
   let verifyService: VerifyCsrfTokenService
+  let getSessionStateByIdService: GetSessionStateByIdService
+  let sessionStateRepository: Repository<SessionState>
 
   const configService = {
     get: jest.fn(),
@@ -19,15 +24,18 @@ describe("VerifyCsrfTokenService", () => {
       if (key === "CSRF_TOKEN_TTL") return 3600
       return undefined
     })
-
+    sessionStateRepository = {
+      findOne: jest.fn().mockResolvedValue({ id: "refresh-id" } as SessionState),
+    } as unknown as Repository<SessionState>
+    getSessionStateByIdService = new GetSessionStateByIdService(sessionStateRepository)
     buildService = new BuildCsrfTokenService(configService)
-    verifyService = new VerifyCsrfTokenService(configService)
+    verifyService = new VerifyCsrfTokenService(configService, getSessionStateByIdService)
   })
 
   it("accepts a valid CSRF token", () => {
     const token = buildService.execute("refresh-id")
 
-    expect(() => verifyService.execute(token)).not.toThrow()
+    expect(async () => await verifyService.execute(token)).not.toThrow()
   })
 
   it("rejects an expired token", () => {
@@ -38,8 +46,8 @@ describe("VerifyCsrfTokenService", () => {
 
     const expiredToken = parts.join(".")
 
-    expect(() =>
-      verifyService.execute(expiredToken),
+    expect(async () =>
+      await verifyService.execute(expiredToken),
     ).toThrow(UnauthorizedException)
   })
 
@@ -51,8 +59,8 @@ describe("VerifyCsrfTokenService", () => {
 
     const tamperedToken = parts.join(".")
 
-    expect(() =>
-      verifyService.execute(tamperedToken),
+    expect(async () =>
+      await verifyService.execute(tamperedToken),
     ).toThrow(UnauthorizedException)
   })
 
@@ -64,14 +72,14 @@ describe("VerifyCsrfTokenService", () => {
 
     const invalidToken = parts.join(".")
 
-    expect(() =>
-      verifyService.execute(invalidToken),
+    expect(async () =>
+      await verifyService.execute(invalidToken),
     ).toThrow(UnauthorizedException)
   })
 
   it("rejects a token with an invalid format", () => {
-    expect(() =>
-      verifyService.execute("this.is.not.valid"),
+    expect(async () =>
+      await verifyService.execute("this.is.not.valid"),
     ).toThrow(UnauthorizedException)
   })
 
@@ -83,8 +91,8 @@ describe("VerifyCsrfTokenService", () => {
 
     const invalidVersionToken = parts.join(".")
 
-    expect(() =>
-      verifyService.execute(invalidVersionToken),
+    expect(async () =>
+      await verifyService.execute(invalidVersionToken),
     ).toThrow(UnauthorizedException)
   })
 
@@ -96,8 +104,8 @@ describe("VerifyCsrfTokenService", () => {
 
     const invalidToken = parts.join(".")
 
-    expect(() =>
-      verifyService.execute(invalidToken),
+    expect(async () =>
+      await verifyService.execute(invalidToken),
     ).toThrow(UnauthorizedException)
   })
 
@@ -106,8 +114,8 @@ describe("VerifyCsrfTokenService", () => {
 
     const token = buildService.execute("refresh-id")
 
-    expect(() =>
-      verifyService.execute(token),
+    expect(async () =>
+      await verifyService.execute(token),
     ).toThrow("CSRF_SECRET is not configured")
   })
 })

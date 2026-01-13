@@ -7,8 +7,8 @@ import {
 import { Observable } from "rxjs"
 import { tap } from "rxjs/operators"
 import { Response } from "express"
-import { BuildCookieWithRefreshTokenService } from "../services/cookies/buildCookieWithRefreshToken.service"
-import { BuildCookieWithCsrfTokenService } from "../services/cookies/buildCookieWithCsrfToken.service"
+import { BuildCookieWithRefreshTokenService } from "../services/cookies/buildRefreshTokenCookie.service"
+import { BuildCookieWithCsrfTokenService } from "../services/cookies/buildCsrfCookie.service"
 import { LoginInternalResult } from "../types/loginInternalResult"
 
 type LoginResponse = {

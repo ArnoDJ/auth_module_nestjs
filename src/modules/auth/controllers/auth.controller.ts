@@ -15,11 +15,11 @@ import {
 } from "@nestjs/swagger"
 import { AuthenticationDto } from "../dto/authentication.dto"
 import { AuthenticationResultDto } from "../dto/authenticationResult.dto"
-import { LogoutService } from "../services/logout.service"
+import { LogoutService } from "../services/sessions/logout.service"
 import { CurrentUser } from "../../../decorators/currentUser.decorator"
 import { JwtGuard } from "../guards/jwtGuard"
 import { User } from "../entities/user"
-import { LoginService } from "../services/authentication/login.service"
+import { LoginService } from "../services/sessions/login.service"
 import { AuthCookieInterceptor } from "../interceptors/authCookie.interceptor"
 import { ClearAuthCookiesInterceptor } from "../interceptors/clearAuthCookie.interceptor"
 

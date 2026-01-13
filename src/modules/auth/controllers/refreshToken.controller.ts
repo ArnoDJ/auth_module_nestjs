@@ -18,14 +18,14 @@ import { Request } from "express"
 import { CsrfGuard } from "../guards/csrfGuard"
 import { AuthCookieInterceptor } from "../interceptors/authCookie.interceptor"
 import { AuthenticationResultDto } from "../dto/authenticationResult.dto"
-import { RefreshTokenService } from "../services/refreshToken.service"
+import { RefreshSessionService } from "../services/sessions/refreshSession.service"
 
 @ApiTags("Auth")
 @Controller("auth")
 @UseGuards(CsrfGuard)
 export class RefreshTokenController {
   constructor(
-    private readonly refreshTokenService: RefreshTokenService,
+    private readonly refreshSessionService: RefreshSessionService,
   ) {}
 
   @ApiOperation({ description: "refresh access token" })
@@ -45,7 +45,7 @@ export class RefreshTokenController {
     if (!refreshToken) {
       throw new UnauthorizedException("not allowed")
     }
-    return await this.refreshTokenService.execute(
+    return await this.refreshSessionService.execute(
       refreshToken,
       userAgent ?? "unknown",
     )

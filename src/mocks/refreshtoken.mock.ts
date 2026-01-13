@@ -1,8 +1,8 @@
-import { RefreshTokenState } from "../modules/auth/entities"
+import { SessionState } from "../modules/auth/entities"
 
-export function createRefreshTokenStateMock(
-  overrides: Partial<RefreshTokenState> = {},
-): RefreshTokenState {
+export function createSessionStateMock(
+  overrides: Partial<SessionState> = {},
+): SessionState {
   return {
     id: "refresh-state-id",
     userId: "user-id",

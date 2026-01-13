@@ -22,7 +22,7 @@ export class EmailVerificationToken {
 
   @ApiProperty()
   @CreateDateColumn({ name: "created_at" })
-  createdAt!: Date
+  createdAt: Date
 
   @ManyToOne(() => User, {
     onDelete: "CASCADE",

@@ -6,24 +6,23 @@ import {
   HttpCode,
   Param
 } from "@nestjs/common"
-import { Response } from "express"
 import {
   ApiOperation,
   ApiTags,
   ApiBadRequestResponse,
   ApiProperty
 } from "@nestjs/swagger"
-import { PasswordResetService } from "../services/passwordReset.service"
+import { PasswordResetRequestService } from "../services/identity/passwordResetRequest.service"
 import { PasswordResetRequestDto } from "../dto/authentication.dto"
 import { ChangePasswordDto } from "../dto/changePassword.dto"
-import { ChangePasswordService } from "../services/changePassword.service"
+import { PasswordResetConfirmService } from "../services/identity/passwordResetConfirm.service"
 
 @ApiTags("Auth")
 @Controller("auth/password-reset")
 export class PasswordResetController {
   constructor(
-    private readonly passwordResetService: PasswordResetService,
-    private readonly changePasswordService: ChangePasswordService,
+    private readonly passwordResetRequestService: PasswordResetRequestService,
+    private readonly passwordResetConfirmService: PasswordResetConfirmService,
   ) {}
 
   @ApiOperation({ description: "requests a password reset" })
@@ -33,7 +32,7 @@ export class PasswordResetController {
   public async reset(
     @Body() passwordResetRequestData: PasswordResetRequestDto,
   ): Promise<void> {
-    await this.passwordResetService.execute(passwordResetRequestData.email)
+    await this.passwordResetRequestService.execute(passwordResetRequestData.email)
   }
 
   @ApiProperty({ description: "sets a new password" })
@@ -43,6 +42,6 @@ export class PasswordResetController {
     @Param("id") id: string,
     @Body() changePasswordDate: ChangePasswordDto,
   ): Promise<void> {
-    await this.changePasswordService.execute(changePasswordDate, id)
+    await this.passwordResetConfirmService.execute(changePasswordDate, id)
   }
 }

@@ -13,7 +13,7 @@ export class PasswordResetToken extends BaseEntity {
   @Column({ name: "user_id", nullable: false })
   public userId: string
 
-  @ManyToOne(() => User, (user: User) => user.refreshTokens, {})
+  @ManyToOne(() => User, (user: User) => user.emailVerificationTokens, {})
   @JoinColumn({ referencedColumnName: "id", name: "user_id" })
   public user: User
 

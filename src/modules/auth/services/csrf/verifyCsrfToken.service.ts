@@ -1,7 +1,7 @@
 import { Injectable, UnauthorizedException } from "@nestjs/common"
 import { ConfigService } from "@nestjs/config"
 import { createHmac, timingSafeEqual } from "crypto"
-import { GetRefreshTokenStateByIdService } from "../getRefreshTokenStateById.service"
+import { GetSessionStateByIdService } from "../sessions/getSessionStateById.service"
 
 type ParsedCsrfToken = {
   version: "v1"
@@ -15,7 +15,7 @@ type ParsedCsrfToken = {
 export class VerifyCsrfTokenService {
   constructor(
     private readonly configService: ConfigService,
-    private readonly getRefreshTokenStateByIdService: GetRefreshTokenStateByIdService,
+    private readonly getSessionStateByIdService: GetSessionStateByIdService,
   ) {}
 
   public async execute(token: string): Promise<void> {
@@ -25,7 +25,7 @@ export class VerifyCsrfTokenService {
     this.verifyHash(parsed)
 
     const state =
-      await this.getRefreshTokenStateByIdService.execute(
+      await this.getSessionStateByIdService.execute(
         parsed.refreshTokenStateId,
       )
     if (state.revoked) {
