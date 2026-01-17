@@ -1,0 +1,21 @@
+{
+  "login": {
+    "title": "Aanmelden",
+    "email": "E-mailadres",
+    "password": "Wachtwoord",
+    "submit": "Aanmelden",
+    "loading": "Bezig…",
+    "forgot": "Wachtwoord vergeten?",
+    "error": "Ongeldig e-mailadres of wachtwoord"
+  },
+  "forgot": {
+    "title": "Wachtwoord vergeten?",
+    "description": "Geef je e-mailadres in en we sturen je een link om je wachtwoord opnieuw in te stellen.",
+    "email": "E-mailadres",
+    "submit": "Resetlink versturen",
+    "loading": "Versturen…",
+    "success": "Als er een account bestaat voor dit e-mailadres, werd er een resetlink verzonden.",
+    "error": "Er ging iets mis. Probeer het later opnieuw.",
+    "back": "Terug naar aanmelden"
+  }
+}

@@ -1,0 +1,21 @@
+{
+  "login": {
+    "title": "Sign in",
+    "email": "Email",
+    "password": "Password",
+    "submit": "Sign in",
+    "loading": "Signing in…",
+    "forgot": "Forgot your password?",
+    "error": "Invalid email or password"
+  },
+  "forgot": {
+    "title": "Forgot your password?",
+    "description": "Enter your email address and we’ll send you a link to reset your password.",
+    "email": "Email address",
+    "submit": "Send reset link",
+    "loading": "Sending…",
+    "success": "If an account exists for this email, a reset link has been sent.",
+    "error": "Something went wrong. Please try again.",
+    "back": "Back to login"
+  }
+}
