@@ -5,7 +5,7 @@ import {
   HttpCode,
   Headers,
   UseGuards,
-  UseInterceptors,
+  UseInterceptors
 } from "@nestjs/common"
 import {
   ApiOperation,
@@ -18,10 +18,12 @@ import { AuthenticationResultDto } from "../dto/authenticationResult.dto"
 import { LogoutService } from "../services/sessions/logout.service"
 import { CurrentUser } from "../../../decorators/currentUser.decorator"
 import { JwtGuard } from "../guards/jwtGuard"
-import { User } from "../entities/user"
+import { User } from "../entities/user.entity"
 import { LoginService } from "../services/sessions/login.service"
 import { AuthCookieInterceptor } from "../interceptors/authCookie.interceptor"
 import { ClearAuthCookiesInterceptor } from "../interceptors/clearAuthCookie.interceptor"
+import { CreateUserDto, UserDto } from "../dto/user.dto"
+import { RegisterUserService } from "../services/identity/registerUser.service"
 
 @ApiTags("Auth")
 @Controller("auth")
@@ -29,6 +31,7 @@ export class AuthController {
   constructor(
     private readonly loginService: LoginService,
     private readonly logoutService: LogoutService,
+    private readonly registerUserService: RegisterUserService,
   ) {}
 
   @ApiOperation({ description: "authenticates a user with email and password" })
@@ -64,6 +67,17 @@ export class AuthController {
       currentUser.id,
       userAgent ?? "unknown",
     )
+  }
+
+  @ApiOperation({ description: "creates a user account" })
+  @ApiOkResponse({ description: "user successfully created" })
+  @ApiBadRequestResponse({ description: "invalid data provided" })
+  @Post("/register")
+  @HttpCode(201)
+  public async register(
+    @Body() userData: CreateUserDto,
+  ): Promise<void> {
+    await this.registerUserService.execute(userData)
   }
 
 }

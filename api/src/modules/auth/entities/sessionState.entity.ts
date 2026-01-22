@@ -1,5 +1,5 @@
 import { Column, CreateDateColumn, Entity, Index, JoinColumn, ManyToOne, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm"
-import { User } from "./user"
+import { User } from "./user.entity"
 
 @Entity("refresh_tokens")
 @Index("ux_session_user_device", ["userId", "userAgent"], { unique: true })

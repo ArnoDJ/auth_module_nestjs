@@ -1,27 +1,19 @@
-import { useQuery, useQueryClient } from "@tanstack/react-query"
 import { authApi } from "../api/auth.api"
 import { AuthContext } from "./authContext"
+import { setAccessToken } from "../api/http"
 
 export function AuthProvider({ children }: { children: React.ReactNode }) {
-  const queryClient = useQueryClient()
-
-  const {
-    data: user,
-    isLoading,
-  } = useQuery({
-    queryKey: ["me"],
-    queryFn: authApi.me,
-    retry: false,
-  })
+  const user = null
+  const isLoading = false
 
   async function login(email: string, password: string) {
-    await authApi.login(email, password)
-    await queryClient.invalidateQueries({ queryKey: ["me"] })
+    const accessToken = await authApi.login(email, password)
+    setAccessToken(accessToken)
   }
 
   async function logout() {
     await authApi.logout()
-    queryClient.removeQueries({ queryKey: ["me"] })
+    setAccessToken(null)
   }
 
   return (

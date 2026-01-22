@@ -11,11 +11,16 @@ async function bootstrap(): Promise<void> {
 
   app.enableCors({
     origin: (origin, callback) => {
-      callback(null, true)
+      if (!origin || AppModule.allowedOrigins.length === 0) {
+        callback(null, true)
+        return
+      }
+      const isAllowed = AppModule.allowedOrigins.includes(origin)
+      callback(null, isAllowed)
     },
     credentials: true,
-    methods: ["*"],
-    allowedHeaders: ["*"],
+    methods: ["GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"],
+    allowedHeaders: ["Content-Type", "Authorization", "X-CSRF-Token"],
   })
 
   app.use((req: { origin: any }, res: any, next: () => void) => {
@@ -48,7 +53,7 @@ async function bootstrap(): Promise<void> {
   const document = SwaggerModule.createDocument(app, config)
   SwaggerModule.setup("api", app, document)
 
-  console.log("EasifyApi running on PORT:", AppModule.port)
+  console.log("Finance Api running on PORT:", AppModule.port)
   await app.listen(Number(process.env.PORT ?? 8080), "0.0.0.0")
 }
 void bootstrap()

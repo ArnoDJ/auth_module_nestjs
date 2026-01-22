@@ -1,6 +1,6 @@
 import { ApiProperty } from "@nestjs/swagger"
 import { BaseEntity, Column, CreateDateColumn, Entity, Index, JoinColumn, ManyToOne, PrimaryGeneratedColumn } from "typeorm"
-import { User } from "./user"
+import { User } from "./user.entity"
 
 @Entity("password_reset_tokens")
 export class PasswordResetToken extends BaseEntity {

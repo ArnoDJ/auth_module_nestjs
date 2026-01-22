@@ -6,7 +6,8 @@
     "submit": "Aanmelden",
     "loading": "Bezig…",
     "forgot": "Wachtwoord vergeten?",
-    "error": "Ongeldig e-mailadres of wachtwoord"
+    "error": "Ongeldig e-mailadres of wachtwoord",
+    "register": "Account aanmaken"
   },
   "forgot": {
     "title": "Wachtwoord vergeten?",
@@ -15,6 +16,20 @@
     "submit": "Resetlink versturen",
     "loading": "Versturen…",
     "success": "Als er een account bestaat voor dit e-mailadres, werd er een resetlink verzonden.",
+    "error": "Er ging iets mis. Probeer het later opnieuw.",
+    "back": "Terug naar aanmelden"
+  },
+  "register": {
+    "title": "Maak je account aan",
+    "description": "Vul je gegevens in om te starten.",
+    "firstName": "Voornaam",
+    "lastName": "Achternaam",
+    "email": "E-mailadres",
+    "password": "Wachtwoord",
+    "passwordConfirmation": "Bevestig wachtwoord",
+    "submit": "Account aanmaken",
+    "loading": "Bezig…",
+    "success": "Account aangemaakt. Controleer je e-mail om te bevestigen.",
     "error": "Er ging iets mis. Probeer het later opnieuw.",
     "back": "Terug naar aanmelden"
   }

@@ -1,6 +1,6 @@
 import { Injectable, UnauthorizedException } from "@nestjs/common"
 import { InjectRepository } from "@nestjs/typeorm"
-import { SessionState } from "../../entities/sessionState"
+import { SessionState } from "../../entities/sessionState.entity"
 import { Repository } from "typeorm"
 
 @Injectable()

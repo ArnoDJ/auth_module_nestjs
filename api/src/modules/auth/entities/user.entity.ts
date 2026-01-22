@@ -8,8 +8,8 @@ import {
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from "typeorm"
-import { SessionState } from "./sessionState"
-import { EmailVerificationToken } from "./emailVerificationToken"
+import { SessionState } from "./sessionState.entity"
+import { EmailVerificationToken } from "./emailVerificationToken.entity"
 
 @Entity("users")
 @Index("ux_users_email", ["email"], { unique: true })

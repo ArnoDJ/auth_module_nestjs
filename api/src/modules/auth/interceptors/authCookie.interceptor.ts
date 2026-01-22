@@ -7,10 +7,9 @@ import {
 import { Observable } from "rxjs"
 import { map } from "rxjs/operators"
 import { Response } from "express"
-
-import { LoginInternalResult } from "../types/loginInternalResult"
 import { BuildCsrfCookieService } from "../services/cookies/buildCsrfCookie.service"
 import { BuildRefreshTokenCookieService } from "../services/cookies/buildRefreshTokenCookie.service"
+import { LoginInternalResult } from "../types/loginInternalResult"
 
 type LoginHttpResponse = {
   accessToken: string

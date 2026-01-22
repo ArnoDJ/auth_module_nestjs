@@ -6,7 +6,8 @@
     "submit": "Sign in",
     "loading": "Signing in…",
     "forgot": "Forgot your password?",
-    "error": "Invalid email or password"
+    "error": "Invalid email or password",
+    "register": "Create an account"
   },
   "forgot": {
     "title": "Forgot your password?",
@@ -15,6 +16,20 @@
     "submit": "Send reset link",
     "loading": "Sending…",
     "success": "If an account exists for this email, a reset link has been sent.",
+    "error": "Something went wrong. Please try again.",
+    "back": "Back to login"
+  },
+  "register": {
+    "title": "Create your account",
+    "description": "Fill in your details to get started.",
+    "firstName": "First name",
+    "lastName": "Last name",
+    "email": "Email address",
+    "password": "Password",
+    "passwordConfirmation": "Confirm password",
+    "submit": "Create account",
+    "loading": "Creating…",
+    "success": "Account created. Check your email to verify it.",
     "error": "Something went wrong. Please try again.",
     "back": "Back to login"
   }

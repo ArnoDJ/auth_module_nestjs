@@ -1,12 +1,14 @@
 import { Navigate } from "react-router-dom"
 import { useAuth } from "./useAuth"
 import type { JSX } from "react"
+import { getAccessToken } from "../api/http"
 
 export function RequireAuth({ children }: { children: JSX.Element }) {
-  const { user, loading } = useAuth()
+  const { loading } = useAuth()
+  const token = getAccessToken()
 
   if (loading) return null
-  if (!user) return <Navigate to="/login" replace />
+  if (!token) return <Navigate to="/login" replace />
 
   return children
 }

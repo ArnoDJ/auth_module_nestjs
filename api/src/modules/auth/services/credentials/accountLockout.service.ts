@@ -2,7 +2,7 @@
 import { Injectable } from "@nestjs/common"
 import { InjectRepository } from "@nestjs/typeorm"
 import { Repository } from "typeorm"
-import { User } from "../../entities/user"
+import { User } from "../../entities/user.entity"
 import { LoginAttemptResultEnum } from "../../enums/loginAttempResult.enum"
 
 const LOCKOUT_START_ATTEMPT = 5

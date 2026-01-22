@@ -25,9 +25,13 @@ export class BuildAccessTokenService {
   }
 
   private getExpiresInSeconds(): number {
-    const value = this.configService.get<number>(
+    const rawValue = this.configService.get<string>(
       "JWT_ACCESS_TOKEN_EXPIRE_TIME",
     )
+    const value =
+      rawValue === undefined || rawValue === ""
+        ? undefined
+        : Number(rawValue)
     if (value === undefined) {
       return 60 * 15
     }

@@ -1,5 +1,6 @@
 import { useState } from "react"
 import { useTranslation } from "react-i18next"
+import { authApi } from "../api/auth.api"
 
 export function PasswordForgetPage() {
   const { t } = useTranslation()
@@ -15,12 +16,7 @@ export function PasswordForgetPage() {
     setLoading(true)
 
     try {
-      await fetch("/auth/password-forget", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email }),
-        credentials: "include",
-      })
+      await authApi.requestPasswordReset(email)
 
       // Always show success, even if email doesn't exist (security)
       setSuccess(true)

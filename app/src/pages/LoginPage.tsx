@@ -1,10 +1,12 @@
 import { useState } from "react"
 import { useAuth } from "../auth/useAuth"
 import { useTranslation } from "react-i18next"
+import { useNavigate } from "react-router-dom"
 
 export function LoginPage() {
   const { login, loading } = useAuth()
   const { t } = useTranslation()
+  const navigate = useNavigate()
 
   const [email, setEmail] = useState("")
   const [password, setPassword] = useState("")
@@ -16,6 +18,7 @@ export function LoginPage() {
 
     try {
       await login(email, password)
+      navigate("/", { replace: true })
     } catch {
       setError(t("login.error"))
     }
@@ -70,9 +73,12 @@ export function LoginPage() {
           </button>
         </form>
 
-        <div className="mt-6 text-center text-sm text-slate-600">
-          <a href="/password-forget" className="text-blue-600 hover:underline">
+        <div className="mt-6 text-center text-sm text-slate-600 space-y-2">
+          <a href="/password-forget" className="block text-blue-600 hover:underline">
             {t("login.forgot")}
+          </a>
+          <a href="/register" className="block text-blue-600 hover:underline">
+            {t("login.register")}
           </a>
         </div>
       </div>

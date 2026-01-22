@@ -5,6 +5,7 @@ import { ServeStaticModule } from "@nestjs/serve-static"
 import { DatabaseModule } from "../database/database.module"
 import { AppController } from "./app.controller"
 import { LoggerMiddleware } from "../../middleware/logger.middleware"
+import { AuthModule } from "../auth/auth.module"
 
 // eslint-disable-next-line @typescript-eslint/naming-convention
 const runningOnAppService = !!process.env.WEBSITE_SITE_NAME
@@ -29,6 +30,7 @@ const runningOnAppService = !!process.env.WEBSITE_SITE_NAME
       rootPath: join(__dirname, "..", "public"),
     }),
     DatabaseModule.forRoot(),
+    AuthModule,
   ],
   controllers: [AppController],
   providers: [],
@@ -43,8 +45,8 @@ export class AppModule implements NestModule {
   constructor(private readonly configService: ConfigService) {
     AppModule.port = this.configService.get<number>("PORT") ?? 3000
     AppModule.apiVersion = this.configService.get<string>("API_VERSION") ?? "1.0"
-    AppModule.apiTitle = this.configService.get<string>("API_TITLE") ?? "Easify API"
-    AppModule.apiDescription = this.configService.get<string>("API_DESCRIPTION") ?? "Easify backend"
+    AppModule.apiTitle = this.configService.get<string>("API_TITLE") ?? "API"
+    AppModule.apiDescription = this.configService.get<string>("API_DESCRIPTION") ?? "Api backend"
     AppModule.allowedOrigins = this.parseAllowedOrigins(
       this.configService.get<string>("ALLOWED_ORIGINS") ?? "*"
     )

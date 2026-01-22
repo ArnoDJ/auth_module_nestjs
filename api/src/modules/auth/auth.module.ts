@@ -15,9 +15,9 @@ import { BuildCsrfTokenService } from "./services/csrf/buildCsrfToken.service"
 import { LogoutService } from "./services/sessions/logout.service"
 import { GetSessionStateByAgentService } from "./services/sessions/getSessionStateByAgent.service"
 import { DatabaseModule } from "../database/database.module"
-import { User } from "./entities/user"
-import { SessionState } from "./entities/sessionState"
-import { PasswordResetToken } from "./entities/passwordResetToken"
+import { User } from "./entities/user.entity"
+import { SessionState } from "./entities/sessionState.entity"
+import { PasswordResetToken } from "./entities/passwordResetToken.entity"
 import { PasswordResetRequestService } from "./services/identity/passwordResetRequest.service"
 import { PasswordResetConfirmService } from "./services/identity/passwordResetConfirm.service"
 import { AuthCookieInterceptor } from "./interceptors/authCookie.interceptor"
@@ -35,6 +35,7 @@ import { BuildRefreshTokenCookieService } from "./services/cookies/buildRefreshT
 import { EmailVerificationToken } from "./entities"
 import { RegisterUserService } from "./services/identity/registerUser.service"
 import { VerifyEmailService } from "./services/identity/verifyEmail.service"
+import { EmailService } from "./services/email.service"
 
 @Module({
   imports: [
@@ -85,6 +86,7 @@ import { VerifyEmailService } from "./services/identity/verifyEmail.service"
     GetUserByEmailService,
     GetUserByIdService,
     UpdateUserService,
+    EmailService,
     AuthCookieInterceptor,
     ClearAuthCookiesInterceptor,
   ],
