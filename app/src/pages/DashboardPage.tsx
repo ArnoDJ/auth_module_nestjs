@@ -3,7 +3,7 @@ import type { CSSProperties } from "react"
 export function DashboardPage() {
   return (
     <div
-      className="relative overflow-hidden rounded-3xl border border-slate-200 bg-white/80 p-8 shadow-[0_20px_60px_-45px_rgba(15,23,42,0.7)]"
+      className="relative overflow-hidden rounded-2xl border border-slate-200 bg-white/80 p-4 shadow-[0_20px_60px_-45px_rgba(15,23,42,0.7)] sm:rounded-3xl sm:p-6 lg:p-8"
       style={
         {
           "--dash-ink": "#0f172a",
@@ -17,19 +17,19 @@ export function DashboardPage() {
       <div className="absolute -bottom-24 -left-20 h-64 w-64 rounded-full bg-teal-200/40 blur-3xl" />
 
       <section className="dash-fade relative z-10">
-        <div className="grid gap-6 lg:grid-cols-[1.3fr_1fr]">
-          <div className="rounded-2xl border border-slate-200 bg-[linear-gradient(135deg,#f4efe6,#e7f5f2)] p-6">
+        <div className="grid gap-6 md:grid-cols-[1.1fr_0.9fr] lg:grid-cols-[1.3fr_1fr]">
+          <div className="rounded-2xl border border-slate-200 bg-[linear-gradient(135deg,#f4efe6,#e7f5f2)] p-5 sm:p-6">
             <p className="text-xs uppercase tracking-[0.3em] text-slate-600">
               Finance Module
             </p>
-            <h1 className="mt-3 text-3xl font-semibold text-[color:var(--dash-ink)]">
+            <h1 className="mt-3 text-2xl font-semibold text-[color:var(--dash-ink)] sm:text-3xl">
               Pulse of your portfolio
             </h1>
             <p className="mt-2 text-sm text-slate-600">
               Track cashflow, staffing balance, and delivery risk at a glance.
             </p>
 
-            <div className="mt-6 grid grid-cols-2 gap-4">
+            <div className="mt-6 grid grid-cols-1 gap-4 sm:grid-cols-2">
               <div className="rounded-xl bg-white/80 p-4">
                 <p className="text-xs text-slate-500">Net cash</p>
                 <p className="mt-2 text-2xl font-semibold text-[color:var(--dash-ink)]">
@@ -47,12 +47,12 @@ export function DashboardPage() {
             </div>
           </div>
 
-          <div className="rounded-2xl border border-slate-200 bg-white/90 p-6">
+          <div className="rounded-2xl border border-slate-200 bg-white/90 p-5 sm:p-6">
             <div className="flex items-center justify-between">
               <h2 className="text-sm font-semibold text-slate-700">Forecast</h2>
               <span className="text-xs text-slate-500">Next 6 weeks</span>
             </div>
-            <div className="mt-6 flex h-40 items-end gap-2">
+            <div className="mt-6 flex h-32 items-end gap-2 sm:h-40">
               {["35", "50", "44", "68", "52", "80"].map((height, index) => (
                 <div
                   key={height}
@@ -80,7 +80,7 @@ export function DashboardPage() {
         className="dash-fade relative z-10 mt-8"
         style={{ animationDelay: "120ms" }}
       >
-        <div className="grid gap-6 lg:grid-cols-3">
+        <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
           <div className="rounded-2xl border border-slate-200 bg-white p-5">
             <p className="text-xs uppercase tracking-[0.2em] text-slate-500">
               Projects
@@ -103,7 +103,7 @@ export function DashboardPage() {
               Utilization steady at 78% this week.
             </p>
           </div>
-          <div className="rounded-2xl border border-slate-200 bg-[linear-gradient(135deg,#0f172a,#134e4a)] p-5 text-white">
+          <div className="rounded-2xl border border-slate-200 bg-[linear-gradient(135deg,#0f172a,#134e4a)] p-5 text-white sm:col-span-2 lg:col-span-1">
             <p className="text-xs uppercase tracking-[0.2em] text-white/70">
               Focus
             </p>
@@ -124,8 +124,8 @@ export function DashboardPage() {
         className="dash-fade relative z-10 mt-8"
         style={{ animationDelay: "220ms" }}
       >
-        <div className="grid gap-6 lg:grid-cols-[1.1fr_0.9fr]">
-          <div className="rounded-2xl border border-slate-200 bg-white p-6">
+        <div className="grid gap-6 md:grid-cols-[1.1fr_0.9fr]">
+          <div className="rounded-2xl border border-slate-200 bg-white p-5 sm:p-6">
             <h3 className="text-sm font-semibold text-slate-700">
               Cash allocation
             </h3>
@@ -149,7 +149,7 @@ export function DashboardPage() {
             </div>
           </div>
 
-          <div className="rounded-2xl border border-slate-200 bg-white p-6">
+          <div className="rounded-2xl border border-slate-200 bg-white p-5 sm:p-6">
             <h3 className="text-sm font-semibold text-slate-700">
               Today
             </h3>
